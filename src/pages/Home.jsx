@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -124,31 +124,63 @@ const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
 
-  const moveToSlide = (index) => {
-  setCurrentSlide(index);
-  const isMobile = window.innerWidth < 768;
-  const slideWidth = isMobile
-    ? sliderRef.current.offsetWidth
-    : sliderRef.current.offsetWidth / 2;
-  sliderRef.current.style.transform = `translateX(-${index * slideWidth}px)`;
-};
+  // Function to calculate the number of distinct scrollable positions for the slider
+  const getNumScrollPositions = useCallback(() => {
+    if (!testimonials || testimonials.length === 0) return 1; // Handle empty array
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      return testimonials.length; // 1 slide visible, so N positions for N slides
+    } else {
+      // 2 slides visible. If N slides, we have N-1 scroll positions.
+      // E.g., 5 slides (0,1,2,3,4). Positions: (0,1), (1,2), (2,3), (3,4). That's 4 positions.
+      // So, testimonials.length - (number of visible items - 1) = 5 - (2 - 1) = 4.
+      return Math.max(1, testimonials.length - 1); // Ensure at least 1 position
+    }
+  }, [testimonials.length]);
 
-  // Auto-play slider
-useEffect(() => {
-  const totalSlides = testimonials.length;
-  const interval = setInterval(() => {
-    setCurrentSlide((prev) => {
-      const next = (prev + 1) % totalSlides;
+  // Function to apply the CSS transform for the slider
+  const applyTransform = useCallback((slideIndex) => {
+    if (sliderRef.current) {
       const isMobile = window.innerWidth < 768;
       const slideWidth = isMobile
         ? sliderRef.current.offsetWidth
         : sliderRef.current.offsetWidth / 2;
-      sliderRef.current.style.transform = `translateX(-${next * slideWidth}px)`;
+      sliderRef.current.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
+    }
+  }, []);
+
+  // Function to update the current slide state and apply the transform
+  const moveToSlide = useCallback((index) => {
+    const maxIndex = getNumScrollPositions() - 1;
+    const validatedIndex = Math.min(Math.max(0, index), maxIndex); // Ensure index is within valid range
+    setCurrentSlide(validatedIndex);
+    applyTransform(validatedIndex);
+  }, [getNumScrollPositions, applyTransform]);
+
+  // Auto-play slider
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentSlide((prev) => {
+      const numPositions = getNumScrollPositions();
+      const next = (prev + 1) % numPositions;
       return next;
     });
   }, 5000);
   return () => clearInterval(interval);
-}, []);
+  }, [getNumScrollPositions]);
+
+  // Effect to apply transform when currentSlide changes (e.g., from auto-play or direct click)
+  useEffect(() => {
+    applyTransform(currentSlide);
+  }, [currentSlide, applyTransform]);
+
+  // Effect to handle initial render and window resize
+  useEffect(() => {
+    const handleResize = () => moveToSlide(currentSlide); // Re-evaluate position on resize
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Initial call to set correct position on mount
+    return () => window.removeEventListener("resize", handleResize);
+  }, [moveToSlide, currentSlide]); // currentSlide is a dependency for moveToSlide
 
   // Handling scroll to top button visibility
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -447,7 +479,7 @@ useEffect(() => {
             ))}
           </div>
           <div className="text-center mt-5">
-            {[...Array(testimonials.length)].map((_, i) => (
+            {[...Array(getNumScrollPositions())].map((_, i) => (
               <span
                 key={i}
                 onClick={() => moveToSlide(i)}
@@ -592,11 +624,9 @@ useEffect(() => {
         </div>
         <div className="mt-[20px] text-[14px] text-[#bbb] flex justify-center items-center flex-wrap gap-2.5 font-bold">
           <p>
-            &copy; 2026
-            <a href="#" className="text-[#ff7b00] no-underline">
-              Avielle Institute.
-            </a>
-            All Rights Reserved.
+            &copy; 2026 <a href="#" className="text-[#ff7b00] no-underline">
+               Avielle Institute. 
+            </a> All Rights Reserved.
           </p>
         </div>
       </footer>

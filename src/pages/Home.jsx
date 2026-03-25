@@ -43,54 +43,54 @@ const courses = [
     title: "SAT",
     description:
       "Prepare For SAT With Our Comprehensive Course Materials, Live Sessions And Practice Tests.",
-    rating: 4.5,
-    reviews: 120,
-    students: 15,
+    rating: 4.3,
+    reviews: 99,
+    students: 35,
   },
   {
     img: TOEFLImage,
     title: "TOEFL",
     description:
       "Prepare For TOEFL With Key Strategies And Tips To Succeed In Your Exams.",
-    rating: 4.5,
+    rating: 4.4,
     reviews: 120,
-    students: 15,
+    students: 45,
   },
   {
     img: IELTSImage,
     title: "IELTS",
     description:
       "Prepare For IELTS With Proven Tips And Techniques to Achieve Your Best Score.",
-    rating: 4.5,
-    reviews: 120,
-    students: 15,
+    rating: 4.3,
+    reviews: 100,
+    students: 40,
   },
   {
     img: ACTImage,
     title: "ACT",
     description:
       "Prepare For ACT With Key Strategies And Practices To Maximize Your College Success.",
-    rating: 4.5,
-    reviews: 120,
-    students: 15,
+    rating: 4.2,
+    reviews: 70,
+    students: 30,
   },
   {
     img: CAELImage,
     title: "CAEL",
     description:
       "Prepare For CAEL With Essential Insights And Personalized Approaches To Succeed In Your Exams.",
-    rating: 4.5,
-    reviews: 120,
-    students: 15,
+    rating: 4.1,
+    reviews: 56,
+    students: 30,
   },
   {
     img: STEPImage,
     title: "STEP",
     description:
       "Prepare For STEP With Critical Skills and Practice to Succeed in Your Subject Exams.",
-    rating: 4.5,
-    reviews: 120,
-    students: 15,
+    rating: 4.0,
+    reviews: 99,
+    students: 30,
   },
 ];
 
@@ -136,7 +136,7 @@ const Home = () => {
       // So, testimonials.length - (number of visible items - 1) = 5 - (2 - 1) = 4.
       return Math.max(1, testimonials.length - 1); // Ensure at least 1 position
     }
-  }, [testimonials.length]);
+  }, []); // testimonials is a static constant outside the component, so [] is safe here.
 
   // Function to apply the CSS transform for the slider
   const applyTransform = useCallback((slideIndex) => {
@@ -158,15 +158,15 @@ const Home = () => {
   }, [getNumScrollPositions, applyTransform]);
 
   // Auto-play slider
-useEffect(() => {
-  const interval = setInterval(() => {
-    setCurrentSlide((prev) => {
-      const numPositions = getNumScrollPositions();
-      const next = (prev + 1) % numPositions;
-      return next;
-    });
-  }, 5000);
-  return () => clearInterval(interval);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => {
+        const numPositions = getNumScrollPositions();
+        const next = (prev + 1) % numPositions;
+        return next;
+      });
+    }, 5000);
+    return () => clearInterval(interval);
   }, [getNumScrollPositions]);
 
   // Effect to apply transform when currentSlide changes (e.g., from auto-play or direct click)
@@ -336,14 +336,6 @@ useEffect(() => {
             learning environment where individuals can thrive and achieve their
             goals.
           </p>
-          <Button
-            variant="default"
-            size="sm"
-            className="cursor-pointer bg-[linear-gradient(349deg,#715cee,#b1a5f8)] text-white font-[600] w-30 h-12 rounded-[23px] transition ease-in-out duration-400 text-[16px] filter drop-shadow-[2px 5px 8px #b1a5f8] hover:bg-[linear-gradient(349deg,#9383f5,#b1a5f8)] hover:text-white flex items-center gap-2"
-            onClick={() => (window.location.href = "#")}
-          >
-            Read more
-          </Button>
         </div>
       </section>
       {/* Services Section */}

@@ -426,7 +426,7 @@ useEffect(() => {
           data-aos="zoom-in"
           className="text-[18px] font-semibold text-[#7b5fff]"
         >
-          Client Testimonial
+          Students Testimonials
         </small>
         <h2
           className={twMerge(

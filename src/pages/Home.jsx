@@ -6,8 +6,7 @@ import {
   faUsers,
   faStar,
   faQuoteLeft,
-  faArrowUp,
-  faGraduationCap,
+  faArrowUp
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faFacebookF,
@@ -31,6 +30,8 @@ import User3 from "/assets/user-3.png";
 import User5 from "/assets/user-5.png";
 import User4 from "/assets/user-4.png";
 import InstructorImage from "/assets/instructor-image.png";
+import FooterLogo from "/assets/avielle-institute-white.png";
+
 
 const lessonCounts = {
   lessons: 50,
@@ -409,7 +410,7 @@ const Home = () => {
           className="bg-white text-[#7b5fff] py-[15px] px-[30px] border-none rounded-[25px] font-bold text-base cursor-pointer transition-colors duration-300 hover:bg-[#ff7b00] hover:text-white"
           data-aos="fade-left"
         >
-          UPGRADE
+          START TODAY
         </Button>
       </section>
       {/* Testimonal Section */}
@@ -507,7 +508,7 @@ const Home = () => {
               their goals.
             </p>
             <a
-              href="#"
+              href="mailto:avielle.institute@gmail.com?subject=Application%20For%20A%20Teaching%20Position"
               className="bg-white text-[#7b5fff] py-[15px] px-[30px] border-none rounded-[25px] font-bold text-base cursor-pointer transition-colors duration-300 hover:bg-[#ff7b00] hover:text-white"
             >
               Start Teaching Today
@@ -555,7 +556,7 @@ const Home = () => {
         <div className="border-t border-t-[rgba(255,255,255,0.1)] pt-[30px] flex flex-wrap justify-between items-center max-w-[1100px] mx-auto">
           {/* Footer Logo */}
           <div className="flex items-center gap-2.5 text-[22px] font-bold text-white">
-            <FontAwesomeIcon icon={faGraduationCap} className="text-2xl" />
+            <img src={FooterLogo} className="w-10 h-10" alt="Avielle Institute Logo" />
             <span className="text-1xl font-bold">
               {" "}
               <a

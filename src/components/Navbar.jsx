@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Heart, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import NavImage from "/assets/avielle-institute-blue.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +37,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex items-center space-x-2">
-              <GraduationCap className="h-8 w-8 text-primary" />
+              <img src={NavImage} alt="Avielle Institute Logo" className="h-8 w-8 text-primary" />
               <span className="text-2xl font-bold text-primary">
                 Avielle Institute.
               </span>
